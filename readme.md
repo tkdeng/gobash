@@ -2,6 +2,8 @@
 
 Run linux bash commands in Go.
 
+[<img src="./assets/icon.png" alt="icon" width="200"/>](./assets/icon.png)
+
 ## Installation
 
 ```shell script
