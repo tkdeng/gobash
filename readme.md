@@ -1,8 +1,8 @@
 # Go Bash
 
-Run linux bash commands in Go.
+[<img src="./assets/icon.png" alt="icon" height="100"/>](./assets/icon.png)
 
-[<img src="./assets/icon.png" alt="icon" width="200"/>](./assets/icon.png)
+Run linux bash commands in Go.
 
 ## Installation
 
