@@ -115,13 +115,16 @@ func (pb *ProgressBar) SetLevel(level float64) {
 }
 
 // SetSize sets the total size of the progress bar for the Step method
-func (pb *ProgressBar) SetSize(size uint) {
-	pb.size = size
+func (pb *ProgressBar) SetSize(size int) {
+	if size < 0 {
+		size = 0
+	}
+	pb.size = uint(size)
 }
 
 // AddSize adds to the total size of the progress bar for the Step method
-func (pb *ProgressBar) AddSize(size uint) {
-	pb.size += size
+func (pb *ProgressBar) AddSize(size int) {
+	pb.size = uint(max(int(pb.size) + size, 0))
 }
 
 // Step increments the progress bar by size (default 1)
