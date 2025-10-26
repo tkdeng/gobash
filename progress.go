@@ -87,12 +87,12 @@ func NewProgressBar(msg string) *ProgressBar {
 
 			space := w - 12 - len(pb.msg)
 			if space < 10 {
-				// fmt.Printf("\033[K\n %s (%d%%)\r\033[1A", pb.msg, uint8(pb.level))
-				fmt.Printf(" %s (%d%%)", pb.msg, uint8(pb.level))
+				// fmt.Printf("\033[K\n %s (%d%%) \r\033[1A", pb.msg, uint8(pb.level))
+				fmt.Printf(" %s (%d%%) ", pb.msg, uint8(pb.level))
 			} else {
 				prog := int(math.Min(float64(pb.level)*float64(space)/100, float64(space)))
-				// fmt.Printf("\033[K\n %s [%s%s] (%d%%)\r\033[1A", pb.msg, strings.Repeat("=", prog), strings.Repeat("-", space-prog), uint8(pb.level))
-				fmt.Printf(" %s [%s%s] (%d%%)", pb.msg, strings.Repeat("=", prog), strings.Repeat("-", space-prog), uint8(pb.level))
+				// fmt.Printf("\033[K\n %s [%s%s] (%d%%) \r\033[1A", pb.msg, strings.Repeat("=", prog), strings.Repeat("-", space-prog), uint8(pb.level))
+				fmt.Printf(" %s [%s%s] (%d%%) ", pb.msg, strings.Repeat("=", prog), strings.Repeat("-", space-prog), uint8(pb.level))
 			}
 
 			fmt.Printf("\033[u")
