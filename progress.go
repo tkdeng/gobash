@@ -119,6 +119,11 @@ func (pb *ProgressBar) SetSize(size uint) {
 	pb.size = size
 }
 
+// AddSize adds to the total size of the progress bar for the Step method
+func (pb *ProgressBar) AddSize(size uint) {
+	pb.size += size
+}
+
 // Step increments the progress bar by size (default 1)
 func (pb *ProgressBar) Step(size ...int) {
 	if len(size) == 0 {
