@@ -58,7 +58,7 @@ func NewProgressBar(msg string) *ProgressBar {
 
 	go func() {
 		for pb.running {
-			time.Sleep(100 * time.Millisecond)
+			time.Sleep(250 * time.Millisecond)
 
 			if ww, hh, e := term.GetSize(int(os.Stdout.Fd())); e == nil {
 				if hh != h || ww != w {
