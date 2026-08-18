@@ -47,7 +47,7 @@ func Run(args []string, dir string, env []string, liveOutput ...bool) (output []
 
 	this method uses `bash -c` to get around the auto quotes added by golang
 
-	note: untrusted user input is Not recommended for this method
+	notice: untrusted user input is Not recommended for this method
 
 	note: stdin is piped to the os logs
 
@@ -86,7 +86,7 @@ func RunRaw(cmdStr string, dir string, env []string, liveOutput ...bool) (output
 
 	this method uses `runuser -l [user] -c`
 
-	note: untrusted user input is Not recommended for this method
+	notice: untrusted user input is Not recommended for this method
 
 	note: stdin is piped to the os logs
 
@@ -126,7 +126,7 @@ func RunUser(cmdStr string, user string, dir string, env []string, liveOutput ..
 
 	this method uses `systemd-run -M [user]@ --user \`
 
-	note: untrusted user input is Not recommended for this method
+	notice: untrusted user input is Not recommended for this method
 
 	note: stdin is piped to the os logs
 
@@ -166,7 +166,7 @@ func RunUserSystemd(cmdStr []string, user string, dir string, env []string, live
 
 	this method uses `pkexec --user [user]` to simulate a user in a normal desktop environment
 
-	note: untrusted user input is Not recommended for this method
+	notice: untrusted user input is Not recommended for this method
 
 	note: stdin is piped to the os logs
 
