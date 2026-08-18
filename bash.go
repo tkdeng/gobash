@@ -124,9 +124,9 @@ func RunUser(cmdStr string, user string, dir string, env []string, liveOutput ..
 /*
 	RunUserSystemd will run an unescaped (unquoted) bash command as a specified user using systemd-run to fix $DISPLAY
 
-	this method uses `RunRaw(...)` with `systemd-run -M [user]@ --user \`
+	this method uses `systemd-run -M [user]@ --user \`
 
-	note: user input is Not recommended for this method
+	note: untrusted user input is Not recommended for this method
 
 	note: stdin is piped to the os logs
 
@@ -139,8 +139,26 @@ func RunUser(cmdStr string, user string, dir string, env []string, liveOutput ..
 		@liveOutput[0]: set to true to pipe stdout and stderr to the os
 		@liveOutput[1]: set to false to only pipe stdout to the os, and keep stderr hidden
 */
-func RunUserSystemd(cmdStr string, user string, dir string, env []string, liveOutput ...bool) (output []byte, err error) {
-	return RunRaw(`systemd-run -M `+user+`@ --user \ `+cmdStr, dir, env, liveOutput...)
+func RunUserSystemd(cmdStr []string, user string, dir string, env []string, liveOutput ...bool) (output []byte, err error) {
+	cmd := exec.Command(`systemd-run`, append([]string{`-M`, user+`@`, `--user`, }, cmdStr...)...)
+	if dir != "" {
+		cmd.Dir = dir
+	}
+	if cmd.Env == nil {
+		cmd.Env = os.Environ()
+	}
+	if env != nil {
+		cmd.Env = append(cmd.Env, env...)
+	}
+	cmd.Stdin = os.Stdin
+	if len(liveOutput) != 0 && liveOutput[0] == true {
+		cmd.Stdout = os.Stdout
+		if len(liveOutput) <= 1 || liveOutput[1] == true {
+			cmd.Stderr = os.Stderr
+		}
+		return []byte{}, cmd.Run()
+	}
+	return cmd.CombinedOutput()
 }
 
 /*
