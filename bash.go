@@ -140,17 +140,24 @@ func RunUser(cmdStr string, user string, dir string, env []string, liveOutput ..
 		@liveOutput[1]: set to false to only pipe stdout to the os, and keep stderr hidden
 */
 func RunUserSystemd(cmdStr []string, user string, dir string, env []string, liveOutput ...bool) (output []byte, err error) {
-	cmd := exec.Command(`systemd-run`, append([]string{`-u`, user, `--user`}, cmdStr...)...)
+	args := []string{"-u", user, "--user", "--wait", "--pipe"}
+
 	if dir != "" {
-		cmd.Dir = dir
+		args = append(args, "--working-directory="+dir)
 	}
+	for _, e := range env {
+		args = append(args, "--setenv="+e)
+	}
+
+	args = append(args, "--")
+	args = append(args, cmdStr...)
+	
+	cmd := exec.Command(`systemd-run`, args...)
 	if cmd.Env == nil {
 		cmd.Env = os.Environ()
 	}
-	if env != nil {
-		cmd.Env = append(cmd.Env, env...)
-	}
 	cmd.Stdin = os.Stdin
+
 	if len(liveOutput) != 0 && liveOutput[0] == true {
 		cmd.Stdout = os.Stdout
 		if len(liveOutput) <= 1 || liveOutput[1] == true {
