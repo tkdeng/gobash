@@ -32,7 +32,7 @@ func main(){
   bash.RunUser(`echo "user test"`, "user", "", nil)
 
   // run command as specified user with systemd-run (to fix issues with $DISPLAY)
-  bash.RunUserSystemd(`echo "user test"`, "user", "", nil)
+  bash.RunUserSystemd([]string{`echo`, `user test`}, "user", "", nil)
 
   // pipe multiple commands `echo "test" | tee -a "./test.txt"`
   bash.Pipe(".", []string{"echo", "test"}, []string{"tee", "-a", "./test.txt"})
