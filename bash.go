@@ -122,6 +122,28 @@ func RunUser(cmdStr string, user string, dir string, env []string, liveOutput ..
 }
 
 /*
+	RunUserSystemd will run an unescaped (unquoted) bash command as a specified user using systemd-run to fix $DISPLAY
+
+	this method uses `RunRaw(...)` with `systemd-run -M [user]@ --user \`
+
+	note: user input is Not recommended for this method
+
+	note: stdin is piped to the os logs
+
+		@cmdStr: the command to run
+		@user: the username to run the command as
+		@dir: a directory to run the command in (set to an empty string to disable)
+		@env: an optional list of environment variables (set to nil to disable)
+
+	[optional]
+		@liveOutput[0]: set to true to pipe stdout and stderr to the os
+		@liveOutput[1]: set to false to only pipe stdout to the os, and keep stderr hidden
+*/
+func RunUserSystemd(cmdStr string, user string, dir string, env []string, liveOutput ...bool) (output []byte, err error) {
+	return RunRaw(`systemd-run -M `+user+`@ --user \ `+cmdStr, dir, env, liveOutput...)
+}
+
+/*
 	RunUserFile will run a bash file as a specified user
 
 	this method uses `pkexec --user [user]` to simulate a user in a normal desktop environment
